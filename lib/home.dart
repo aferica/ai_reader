@@ -8,6 +8,7 @@ import 'utils/request.dart';
 import 'utils/api.dart';
 
 import 'package:ai_reader/books/shelf.dart';
+import 'package:ai_reader/find/fhome.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -19,6 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, dynamic> userInfo;
 
   PageController pageController;
+  TabController _tabController;
   int page = 0;
   List titles = ['书架', '发现'];
 
@@ -30,56 +32,73 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(titles[page]),
-        centerTitle: true,
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: null
-          )
-        ],
-      ),
-      drawer: Drawer(
-        child: Column(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text('免费小说阅读'),
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search, color: Colors.white,),
+              onPressed: null
+            )
+          ],
+          bottom: new TabBar(
+            tabs: <Widget>[
+              new Tab(text: '书架',),
+              new Tab(text: '社区',),
+              new Tab(text: '发现',),
+//              new Tab(icon: new Icon(Icons.directions_bus),),
+            ],
+            controller: _tabController,
+          ),
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: <Widget>[
+            ],
+          ),
+        ),
+        body: new TabBarView(
           children: <Widget>[
+            new BookShelfPage(),
+            new FHomePage(),
+            new FHomePage(),
           ],
         ),
       ),
-      body:
 //        new JHomePage(),
-      new PageView(
-        physics: NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          new BookShelfPage(),
-          new BookShelfPage(),
-        ],
-        controller: pageController,
-        onPageChanged: pageChanged,
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: CupertinoTabBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(IconData(0xe70b, fontFamily: 'aliIconFont'), size: 28.0,),
-            activeIcon: Icon(IconData(0xe710, fontFamily: 'aliIconFont'), size: 28.0,),
-            title: Text('书架'),
-            backgroundColor: Theme.of(context).primaryColor
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(IconData(0xe70a, fontFamily: 'aliIconFont'), size: 28.0,),
-            activeIcon: Icon(IconData(0xe70f, fontFamily: 'aliIconFont'), size: 28.0,),
-            title: Text('发现'),
-            backgroundColor: Theme.of(context).primaryColor
-          ),
-        ],
-        onTap: changeTabBar,
-        currentIndex: page,
-      ),
+//      new PageView(
+//        physics: NeverScrollableScrollPhysics(),
+//        children: <Widget>[
+//          new BookShelfPage(),
+//          new FHomePage(),
+//        ],
+//        controller: pageController,
+//        onPageChanged: pageChanged,
+//      ),
+//      // This trailing comma makes auto-formatting nicer for build methods.
+//      bottomNavigationBar: CupertinoTabBar(
+//        items: <BottomNavigationBarItem>[
+//          BottomNavigationBarItem(
+//            icon: Icon(IconData(0xe70b, fontFamily: 'aliIconFont'), size: 28.0,),
+//            activeIcon: Icon(IconData(0xe710, fontFamily: 'aliIconFont'), size: 28.0,),
+//            title: Text('书架'),
+//            backgroundColor: Theme.of(context).primaryColor
+//          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(IconData(0xe70a, fontFamily: 'aliIconFont'), size: 28.0,),
+//            activeIcon: Icon(IconData(0xe70f, fontFamily: 'aliIconFont'), size: 28.0,),
+//            title: Text('发现'),
+//            backgroundColor: Theme.of(context).primaryColor
+//          ),
+//        ],
+//        onTap: changeTabBar,
+//        currentIndex: page,
+//      ),
     );
   }
 

@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         canvasColor: const Color(0xfffdfdfd),
-        primaryColor: const Color(0xfff9ed69),
+        indicatorColor: Colors.white,
+        primaryColor: const Color(0xffB93121),
+        backgroundColor: const Color(0xffB93121),
+        accentIconTheme: IconThemeData(color: Colors.white),
       ),
       onGenerateRoute: Routes.router.generator,
     );

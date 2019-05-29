@@ -34,6 +34,13 @@ class BookShelfPageState extends State<BookShelfPage> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('111111');
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
