@@ -52,7 +52,7 @@ class ListBookItem extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 120,
-        padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0, bottom: 10.0),
+        padding: EdgeInsets.only(top: 8.0, left: 10.0, right: 10.0, bottom: 8.0),
         child: Row(
           children: <Widget>[
             Container(

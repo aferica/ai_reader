@@ -32,10 +32,10 @@ class BReadPageState extends State<BReadPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    int lines = (MediaQuery.of(context).size.height - 80) ~/ ( fontSize * fontHeight * 1.3 ) ;
+    int lines = (MediaQuery.of(context).size.height - 80) ~/ ( fontSize * fontHeight * 1.5 ) ;
     print(lines);
     return Container(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 40.0, bottom: 10.0),
+        padding: EdgeInsets.only(left: 10.0, right: 20.0, top: 40.0, bottom: 20.0),
         color: const Color(0xffE5D8AB),
         constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height,
