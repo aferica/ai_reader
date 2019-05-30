@@ -1,58 +1,279 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemChrome, SystemUiOverlay;
+import 'dart:ui';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+//import 'package:ai_reader/utils/route.dart';
+import 'package:ai_reader/utils/request.dart';
+import 'package:ai_reader/utils/api.dart';
+import 'package:ai_reader/utils/url_util.dart';
 
 class BReadPage extends StatefulWidget {
   String bookId;
-  int chapterNo;
-  int pageNo;
-  BReadPage({Key key, this.bookId, this.chapterNo, this.pageNo}):super(key: key);
+  BReadPage({Key key, this.bookId}):super(key: key);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return BReadPageState(bookId: this.bookId, chapterNo: this.chapterNo, pageNo: this.pageNo);
+    return BReadPageState(bookId: this.bookId);
   }
 }
 
 class BReadPageState extends State<BReadPage> {
   BReadPageState({
     Key key,
-    bookId,
-    chapterNo,
-    pageNo
+    this.bookId
   });
 
+  String chapterTitle = '';
+  String content;
+  List<String> contents;
   String bookId;
-  int chapterNo;
-  int pageNo;
-  double fontHeight = 1.2;
-  double fontSize = 18;
+  int chapterNo = 0;
+  int pageNo = 0;
 
-  String title = '潭腿义气';
-  String content='\u3000\u3000不管怎么说，郑亚觉得，自己这都属于精神不正常，心中感觉很害怕，所以，在看到那个熟悉的农家小院，自己的家的时候，眼泪不禁流了出来。\n我回来了，回家真好。\n远远地，郑亚扬声喊道：“爸，爸，我回来了。”\n爸爸双腿行动不便，应该在家。\n“小亚，回来了啊，来，来，过来见过你马叔。”父亲温暖的声音从院子里传了出来。\n家里来客人了？\n郑亚赶紧抹抹眼睛，深吸了一口气，推开院门，走了进去。\n一个普普通通，朴素到贫寒的小院，却让郑亚有着发自内心的亲切和安心。\n院子里，父亲没有如同往常一般坐在轮椅上编制竹席。\n院子里此时摆了一个四方桌子，父亲跟一个四方脸中年人对面而坐，好像在说话。\n中年人的身后，站着一位跟自己差不多年轻的少年，一头短发，穿着短袖，小麦色的皮肤，整个人看起来精气神十足。\n此时，自己进来，三个人齐齐向自己看了过了。\n没有过多打量两位客人，郑亚看向了双腿虽然行动不便，但依然顽强不息的父亲，心中涌起了阵阵温暖，感觉自己找到了依靠，那种遽然得病的茫然无措，在看到父亲的那一刻，消减了许多。\n心中安定下来。\n向前走了两步，站在父亲的身后，郑亚强忍那种生病之后，想大哭一场的冲动，叫了一声：“爸，我回来了。”\n父亲还没说话，他对面，中年马叔端起茶杯，喝了一口自家制作的红茶，脸上带有审视的目光，看着自己说道：“郑林，这就是你儿子？”\n然后好像很不满意地摇头：“弱不禁风，下盘不稳，郑林啊郑林，你这样子，你儿子这样子，让我很失望，非常失望，失望透顶啊。”\n马叔的态度不是很好，而他身边的那个少年，更是对自己露出了丝丝不屑。\n郑亚不由想到，父亲的这两个客人，好像不是很友好。\n“马俊”，郑亚听到父亲说道：“小亚没有练过，不要拿他跟你徒弟去比，当年的那些义气之争，都是过去的事了，过去的就算了吧。”\n“过去的就算了？”马叔的脸上浮现丝丝红潮：“当年，你郑林三败马俊，放言国术界，怎么说的？我至今记忆犹新，‘潭腿，还是当以少林为尊’，好，我斗不过你，认了，但等我修炼有成，再来找你，你居然变成了瘸子，哈哈哈，走路都要靠轮椅的死瘸子……”\n父亲的脸上，露出了丝丝讪然。\n郑亚的心中，却是瞬间愤怒起来。\n从小到大，郑亚最讨厌的就是别人当他的面，叫他的父亲“瘸子”，双眼猛地一瞪，郑亚大声吼了一句：“够了，我家不欢迎你，滚。”\n马俊面对自己的愤怒，笑了，笑着拍起了双掌：“啪啪啪”，嘴里也大声说道：“好，有种，郑林，果然是你的儿子，有几分血性，马赫，去，领教领教郑家的少林潭腿，小心，别把他跟伤得太狠了，哈哈哈……”\n郑林手在轮椅上向上撑了撑，但双腿无力，无奈地再次坐在了轮椅之上，嘴里说道：“马兄弟，我儿没有练武……”\n看到着急的父亲，郑亚不由想起小时候，记得那时，父亲也曾经让自己学习扎马步，自己坚持不住，就去找母亲哭闹，结果，母亲罕见地跟父亲大吵了一架，然后自己就再也没站过马桩了。\n马赫已经闻声而动，大踏步走向郑亚，嘴里说道：“有种别跑，放心，我下手不会太重的，看腿……”\n二话不说，马赫已经飞起一腿，身体一旋，一个斜踢，踢向郑亚。\n郑林一声轻叹。\n他的眼力，自然能看得出来，马赫的“斜踢”十分标准，是典型的临清潭腿招式，儿子没习武，怕是会被踢个正着，估计就算不伤，也得丢脸了。\n郑亚热血一涌，也向马赫冲了过去。\n眼看郑亚就要被一脚踹个正着。\n马俊已经面带微笑地看向焦急而面如土色，正在不停转动轮椅的郑林，心中涌起了阵阵畅快感觉。\n但此时，冲出去的郑亚，发生了意想不到的变化。\n郑亚好像听到自己在说：“敢对本状元出手，真是找死，左腿后移，右腿打横，出掌，膻中穴……一招重创，啊，小子，你这是移的什么步伐，差了那么多……”\n郑亚本能地按照郑冠的指令，勉勉强强地攻出了一掌。\n碰的一声响，被自己评价差了许多的一掌，效果却是不错。\n郑亚发现自己已经结结实实一掌，猛地击打在了马赫的前胸。\n而自己的右腿，又刚刚好别住了马赫刚刚落地的那条腿。\n来不及反应的马赫哎呀一声惨叫，被自己一掌给撂倒在地上，砸得扑通一声巨响，在地上哼开了。\n而那个马俊好像是不可思议地，双眼瞪圆，从椅子一挺而起，手对自己一指，大声说道：“好一个少林推磨手，郑林，这就是你家没练武的儿子？”\n父亲一脸惊喜，有点不能理解地，十分惊奇地看向了自己。\n自己从来没有练武，父亲肯定很好奇自己为何能会如此麻利地一招撂倒了马赫把？\n看到惊讶至极的马俊和父亲，郑亚心中，此时翻江倒海。\n前不久，他只忙着为自己生病担惊受怕去了，却没有想过郑冠记忆觉醒能带给自己的巨大变革性改变。\n但刚刚一招撂倒马赫，却让郑亚却十分清晰的感到，自己今后的一生，恐怕会随着老祖宗记忆在潜意识之中的觉醒，发生天翻地覆的变化。\n当然，在此之前，自己得为击败马赫找个说得过去的理由。\n这一刻，郑亚只觉得自己的脑子超出常规地好使，飞快地想起了儿时曾经好奇地翻过父亲练武图册的往事，心中一动。\n脸上露出丝丝不好意思的表情，郑亚摸摸自己的脑袋，轻轻说道：“爸，我偷看了你藏在箱子里的少林罗汉拳法，偷偷练了几招。”\n郑林恍然大悟地“哦”了一声，看向马俊，笑着说道：“马兄弟，你也听见了，他不过是恰巧偷练了几招，你也看见了，他这下盘，可不像是练家子，小亚，还不把他扶起来？”\n郑亚“哦”了一声，上前几步，去拉还在地上哼哼唧唧的马赫。\n谁知自己刚刚走近，马赫一个鹞子翻身，从地上盘旋而起，弹腿一踢，攻向自己的面门。\n腿来的很猛，眼看自己就要被踢个正着。\n郑亚心中一惊，暗道一声完蛋。\n郑冠记忆又跑了出来：“曲腿，后仰，斜跨步，肘击……哦，又击错位置了，应该顶他裆部……”\n咚的一声，郑亚感觉肘子上微微一震，已经一肘子顶在了马赫的大腿根部。\n马赫被自己一下顶翻，一声惨叫，倒在了地上，抱着腿满地打滚。\n马俊的脸上，青红交加，嘴里一声暴吼：“郑林，你很好，你教的儿子更好，今日算我自取其辱，马赫，起来，我们走。”\n郑亚看到，马赫抱着一条受伤的腿站了起来，眼中有点怨恨地看了自己一眼，单腿跳着，跟随师父向小院外走了出去。\n而郑林有点意外惊喜地看向自己，脸上浮现出由衷地笑容，扬声说道：“马兄弟好走，不送。”\n院子之外，马俊的声音遥遥传了过来：“郑林，你教了一个好儿子，居然两招撂倒了我的三徒弟，很好，很好，半年之后，我会携带我的大弟子马浩再次前来请教，告辞，后会有期……';
+  double fontHeight = 1.1;
+  double fontSize = 20;
+  double screenHeight;
+  double screenWidth;
+  int maxLines = 24;
+
+  TextStyle titleStyle = TextStyle(fontSize: 14, height: 1.5);
+  TextStyle contentStyle;
+
+  SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    SystemChrome.setEnabledSystemUIOverlays([]);
+    getChapters();
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    int lines = (MediaQuery.of(context).size.height - 80) ~/ ( fontSize * fontHeight * 1.5 ) ;
-    print(lines);
-    return Container(
-        padding: EdgeInsets.only(left: 10.0, right: 20.0, top: 40.0, bottom: 20.0),
-        color: const Color(0xffE5D8AB),
-        constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height,
+    setState(() {
+      screenWidth = MediaQuery.of(context).size.width;
+      screenHeight = MediaQuery.of(context).size.height;
+    });
+
+    contentStyle = TextStyle(
+      fontSize: fontSize,
+      height: fontHeight,
+    );
+
+    return Scaffold(
+      backgroundColor: const Color(0xffE5D8AB),
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          child: _buildContent()
         ),
-        child: Text(
-          content.replaceAll(new RegExp(r'\n'), '\n\u3000\u3000'),
-          style: TextStyle(
-            fontSize: fontSize,
-            height: fontHeight,
-            color: Colors.black,
-            decoration: TextDecoration.none,
-            fontWeight: FontWeight.normal,
-//            fontFamily: 'puhui'
-          ),
-          maxLines: lines,
-        ),
+      ),
     );
   }
+
+  Widget _buildContent() {
+    if(content != null && contents.length > 0) {
+      print(contents[pageNo].substring(100));
+      return Stack(
+        children: <Widget>[
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 30,
+            child: Text(chapterTitle, style: titleStyle,),
+          ),
+          Positioned(
+            top: 30,
+            bottom: 30,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                if(pageNo < contents.length - 1) {
+                  setState(() {
+                    pageNo = pageNo + 1;
+                  });
+                } else {
+                  setState(() {
+                    chapterNo = chapterNo + 1;
+                    pageNo = 0;
+                  });
+                  getNextChapter();
+                }
+              },
+              child: Text(
+                contents[pageNo],
+                style: contentStyle,
+                maxLines: maxLines,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 30,
+            child: Text(
+              '第' + (pageNo + 1).toString() + '页 / 共' + contents.length.toString() + '页',
+              style: titleStyle, textAlign: TextAlign.center,
+            )
+          )
+        ],
+      );
+    } else {
+      return new Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+  }
+
+
+  getChapters() async {
+    SharedPreferences _sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      sharedPreferences = _sharedPreferences;
+    });
+    int readChapterNo = _sharedPreferences.getInt('readChapterNo_' + bookId) ?? 0;
+    int readPageNo = _sharedPreferences.getInt('readPageNo_' + bookId) ?? 0;
+    print(readChapterNo);
+    if (_sharedPreferences.getString('chapters_' + bookId) != null && _sharedPreferences.getString('sources_' + bookId) != null ) {
+      print(_sharedPreferences.getInt('selectSource_' + bookId));
+      print(_sharedPreferences.getString('chapters_' + bookId));
+      Map<String, dynamic> result = json.decode(_sharedPreferences.getString('chapters_' + bookId));
+      print(result['chapters'][readChapterNo]['title']);
+      getChapterContent(
+          result['chapters'][readChapterNo]['link'] ?? '',
+          result['chapters'][readChapterNo]['title'] ?? '',
+          readChapterNo, readPageNo
+      );
+    } else {
+      Request.get(Api.host + Api.bookSource + bookId).then((sources) {
+        if (sources != null && sources.length > 0) {
+          int selectSource = 0;
+          if (sources['reslut'].length > 1) {
+            selectSource = 1;
+          }
+          _sharedPreferences.setString('sources_' + bookId, json.encode(sources));
+          _sharedPreferences.setInt('selectSource_' + bookId, selectSource);
+          Request.get(Api.host + Api.bookChapters1 + sources['reslut'][selectSource]['_id'] + Api.bookChapters2).then((chapters) {
+            if (chapters != null) {
+              _sharedPreferences.setString('chapters_' + bookId, json.encode(chapters));
+              getChapterContent(
+                  chapters['chapters'][readChapterNo]['link'] ?? '',
+                  chapters['chapters'][readChapterNo]['title'] ?? '',
+                  readChapterNo, readPageNo
+              );
+            }
+          });
+        }
+      });
+    }
+  }
+
+  getNextChapter() {
+    int readChapterNo = chapterNo;
+    int readPageNo = 0;
+    sharedPreferences.setInt('readChapterNo_' + bookId, readChapterNo);
+    sharedPreferences.setInt('readPageNo_' + bookId, readPageNo);
+
+    Map<String, dynamic> result = json.decode(sharedPreferences.getString('chapters_' + bookId));
+    getChapterContent(
+        result['chapters'][readChapterNo]['link'] ?? '',
+        result['chapters'][readChapterNo]['title'] ?? '',
+        readChapterNo, readPageNo
+    );
+  }
+
+  getChapterContent(String link, String title, int readChapterNo, int readPageNo) {
+
+    Request.get(Api.chapterHost + Api.bookContent + UrlEncode().encode(link)).then((res){
+      String contentText = '你正在使用的版本已不再提供支持，为确保你的正常使用，请下载安装最新版<追书神器>。';
+      if(res != null) {
+        contentText = res['chapter']['cpContent'] ?? res['chapter']['body'] ?? res['body'];
+        contentText = contentText.replaceAll(new RegExp(r'\n\n'), '\n');
+        contentText = contentText.replaceAll(new RegExp(r'\n'), '\n\u3000\u3000');
+      }
+      contentText = '\u3000\u3000' + contentText;
+      setState(() {
+        chapterTitle = title;
+        content = contentText;
+        contents = pagingString(contentText);
+        chapterNo = readChapterNo;
+        pageNo = readPageNo;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    super.dispose();
+  }
+
+  List<String> pagingString(String text) {
+    List<String> result = new List();
+    int length = text.length;
+    int tempLen = 0;
+    while(tempLen < length) {
+      String pageText = pageString(text.substring(tempLen));
+      result.add(pageText);
+      tempLen += pageText.length;
+    }
+    return result;
+  }
+
+  String pageString(String text) {
+    if (hasOverflow(text)) {
+      return text;
+    }
+    int maxLoop = 20;
+
+    int start = 0;
+    int end = text.length;
+    int mid = (end + start) ~/ 2;
+
+    // 最多循环20次
+    for (int i = 0; i < maxLoop; i++) {
+      if (hasOverflow(text.substring(0, mid))) {
+        if (mid <= start || mid >= end) break;
+        // 未越界
+        start = mid;
+        mid = (start + end) ~/ 2;
+      } else {
+        // 越界
+        end = mid;
+        mid = (start + end) ~/ 2;
+      }
+    }
+
+    return text.substring(0, mid);
+  }
+
+  // 判断文本是否溢出
+  bool hasOverflow(String text) {
+    var tp = new TextPainter(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(
+          fontSize: fontSize,
+          height: fontHeight,
+        )
+      ),
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.left,
+      maxLines: maxLines,
+    );
+    tp.layout(maxWidth: screenWidth, minWidth: screenWidth);
+
+    return !(tp.didExceedMaxLines ||
+        tp.height > (screenHeight - 180.0)
+    );
+  }
+
 }
 

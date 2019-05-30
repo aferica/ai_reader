@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 //import 'route.dart';
 
@@ -21,13 +21,26 @@ class Request {
 //      Fluttertoast.showToast(msg: '请登录后使用', backgroundColor: Colors.black54, fontSize: 14.0);
 ////      Routes.router.navigateTo(context, '${Routes.login}');
 //    } else {
-      Response res = await dio.get(
-        url,
-        queryParameters: params,
+      try {
+        Response res = await dio.get(
+            url,
+            queryParameters: params,
+            options: new Options(
+                responseType: ResponseType.plain
+            )
 //        options: new Options(headers: { 'Authorization': 'Bearer ' + token })
-      );
-      result = json.decode(res.toString());
-      print(result);
+        );
+
+        String tempRes = res.toString();
+        if(tempRes[0] == '[') {
+          tempRes = '{"reslut":' + tempRes + '}';
+        }
+        result = json.decode(tempRes.toString());
+        print(result);
+      } catch (e) {
+        result = null;
+        Fluttertoast.showToast(msg: '网络请求错误，请重试', backgroundColor: Colors.black54, fontSize: 14.0);
+      }
 //      if (!result['ok']) {
 //        Fluttertoast.showToast(msg: result['msg'], backgroundColor: Colors.black54, fontSize: 14.0);
 //        result = null;

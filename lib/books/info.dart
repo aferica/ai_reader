@@ -106,8 +106,7 @@ class BInfoPageState extends State<BInfoPage> {
                     padding: EdgeInsets.only(left: 15.0),
                     child: RaisedButton(
                       onPressed: () {
-                        String bodyJson = '{"bookId":"${bookInfo['_id']}","chapterNo":0,"pageNo":0}';
-                        Routes.router.navigateTo(context, '/book/read/' + bodyJson);
+                        Routes.router.navigateTo(context, '/book/read/' + bookInfo['_id']);
                       },
                       color: Theme.of(context).primaryColor,
                       child: Text('开始阅读'),

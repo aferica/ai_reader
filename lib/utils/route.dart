@@ -1,5 +1,4 @@
 import 'package:fluro/fluro.dart';
-import 'dart:convert';
 
 import 'package:ai_reader/home.dart';
 import 'package:ai_reader/books/shelf.dart';
@@ -13,7 +12,7 @@ class Routes {
   static Router router;
   static String home = '/';
   static String bShelf = '/book/shelf';
-  static String bRead = '/book/read/:info';
+  static String bRead = '/book/read/:id';
   static String bInfo = '/book/info/:id';
 
   static String rList = '/rank/list';
@@ -34,8 +33,7 @@ class Routes {
     router.define(
         bRead,
         handler: Handler(handlerFunc: (context, params) {
-          Map<String, dynamic> map = json.decode(params['info'][0]);
-          return BReadPage(bookId: map['bookId'], chapterNo: map['chapterNo'], pageNo: map['pageNo'],);
+          return BReadPage(bookId: params['id'][0]);
         }),
         transitionType: TransitionType.inFromRight
     );
