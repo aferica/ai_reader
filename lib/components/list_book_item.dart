@@ -69,6 +69,8 @@ class ListBookItem extends StatelessWidget {
                   Text(author, textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.black26),),
                   Text(shortIntro, textAlign: TextAlign.left, maxLines: 2, style: TextStyle(fontSize: 12.0, color: Colors.black26),),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Text('追书人数：', style: TextStyle(fontSize: 12.0,height: 1.5),),
                       Text(latelyFollower, style: TextStyle(fontSize: 13.0, color: Colors.pink,height: 1.5),),

@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        scaffoldBackgroundColor: const Color(0xfffdfdfd),
         canvasColor: const Color(0xfffdfdfd),
         indicatorColor: Colors.white,
         primaryColor: const Color(0xffB93121),
