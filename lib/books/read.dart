@@ -57,6 +57,7 @@ class BReadPageState extends State<BReadPage> {
     setState(() {
       screenWidth = MediaQuery.of(context).size.width;
       screenHeight = MediaQuery.of(context).size.height;
+      maxLines = (MediaQuery.of(context).size.height - 80 - 30) ~/ (fontSize * fontHeight * fontHeight);
     });
 
     contentStyle = TextStyle(
@@ -68,7 +69,7 @@ class BReadPageState extends State<BReadPage> {
       backgroundColor: const Color(0xffE5D8AB),
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          padding: EdgeInsets.only(left: 10.0, right: 5.0),
           child: _buildContent()
         ),
       ),
@@ -77,7 +78,6 @@ class BReadPageState extends State<BReadPage> {
 
   Widget _buildContent() {
     if(content != null && contents.length > 0) {
-      print(contents[pageNo].substring(100));
       return Stack(
         children: <Widget>[
           Positioned(
@@ -88,13 +88,14 @@ class BReadPageState extends State<BReadPage> {
             child: Text(chapterTitle, style: titleStyle,),
           ),
           Positioned(
-            top: 30,
-            bottom: 30,
+            top: 40,
+            bottom: 40,
             left: 0,
             right: 0,
             child: GestureDetector(
               onTap: () {
                 if(pageNo < contents.length - 1) {
+                  sharedPreferences.setInt('readPageNo_' + bookId, pageNo + 1);
                   setState(() {
                     pageNo = pageNo + 1;
                   });
@@ -102,8 +103,30 @@ class BReadPageState extends State<BReadPage> {
                   setState(() {
                     chapterNo = chapterNo + 1;
                     pageNo = 0;
+                    content = '';
+                    contents = [];
                   });
                   getNextChapter();
+                }
+              },
+              onHorizontalDragEnd: (e) {
+                print(e);
+                print(e.velocity);
+                print(e.velocity.pixelsPerSecond.dx);
+                if(e.velocity.pixelsPerSecond.dx > 0) {
+                  if(pageNo > 0) {
+                    sharedPreferences.setInt('readPageNo_' + bookId, pageNo - 1);
+                    setState(() {
+                      pageNo = pageNo - 1;
+                    });
+                  } else {
+                    setState(() {
+                      chapterNo = chapterNo - 1;
+                      content = '';
+                      contents = [];
+                    });
+                    getLastChapter();
+                  }
                 }
               },
               child: Text(
@@ -175,6 +198,19 @@ class BReadPageState extends State<BReadPage> {
     }
   }
 
+  getLastChapter() {
+    int readChapterNo = chapterNo;
+    int readPageNo = 0;
+    sharedPreferences.setInt('readChapterNo_' + bookId, readChapterNo);
+
+    Map<String, dynamic> result = json.decode(sharedPreferences.getString('chapters_' + bookId));
+    getChapterContent(
+        result['chapters'][readChapterNo]['link'] ?? '',
+        result['chapters'][readChapterNo]['title'] ?? '',
+        readChapterNo, readPageNo, isLast: true
+    );
+  }
+
   getNextChapter() {
     int readChapterNo = chapterNo;
     int readPageNo = 0;
@@ -189,7 +225,7 @@ class BReadPageState extends State<BReadPage> {
     );
   }
 
-  getChapterContent(String link, String title, int readChapterNo, int readPageNo) {
+  getChapterContent(String link, String title, int readChapterNo, int readPageNo, { bool isLast = false}) {
 
     Request.get(Api.chapterHost + Api.bookContent + UrlEncode().encode(link)).then((res){
       String contentText = '你正在使用的版本已不再提供支持，为确保你的正常使用，请下载安装最新版<追书神器>。';
@@ -199,13 +235,17 @@ class BReadPageState extends State<BReadPage> {
         contentText = contentText.replaceAll(new RegExp(r'\n'), '\n\u3000\u3000');
       }
       contentText = '\u3000\u3000' + contentText;
+      List contentsText = pagingString(contentText);
       setState(() {
         chapterTitle = title;
         content = contentText;
-        contents = pagingString(contentText);
+        contents = contentsText;
         chapterNo = readChapterNo;
-        pageNo = readPageNo;
+        pageNo = isLast ? contentsText.length - 1 : readPageNo;
       });
+      if(isLast) {
+        sharedPreferences.setInt('readPageNo_' + bookId, contentsText.length - 1);
+      }
     });
   }
 
@@ -268,10 +308,10 @@ class BReadPageState extends State<BReadPage> {
       textAlign: TextAlign.left,
       maxLines: maxLines,
     );
-    tp.layout(maxWidth: screenWidth, minWidth: screenWidth);
+    tp.layout(maxWidth: screenWidth - 15.0, minWidth: screenWidth - 15.0);
 
     return !(tp.didExceedMaxLines ||
-        tp.height > (screenHeight - 180.0)
+        tp.height > (screenHeight - 120.0)
     );
   }
 
