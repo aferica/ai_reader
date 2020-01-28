@@ -61,6 +61,7 @@ class RankBookListState extends State<RankBookList> {
               retentionRatio: book['retentionRatio'].toString(),
             );
           }
+          return null;
         }
     );
   }

@@ -57,8 +57,8 @@ class ListBookItem extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 100,
-              padding: EdgeInsets.all(10.0),
-              child: CachedNetworkImage(imageUrl: 'http://statics.zhuishushenqi.com' + cover, width: 60, height: 80,),
+              padding: EdgeInsets.all(0.0),
+              child: CachedNetworkImage(imageUrl: 'http://statics.zhuishushenqi.com' + cover, width: 80, height: 100,),
             ),
             Container(
               width: MediaQuery.of(context).size.width - 120,

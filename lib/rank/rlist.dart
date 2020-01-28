@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 import 'package:ai_reader/utils/route.dart';
 import 'package:ai_reader/utils/request.dart';
@@ -21,7 +20,9 @@ class RListPageState extends State<RListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getRankList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getRankList();
+    });
   }
 
   @override
@@ -67,7 +68,7 @@ class RListPageState extends State<RListPage> {
       } else {
         notImportantRank.add(item);
       }
-    };
+    }
     importantRank.add(null);
     return  // Column(
 //      children: <Widget>[
@@ -106,7 +107,7 @@ class RListPageState extends State<RListPage> {
 
   List<Widget> _buildOtherList(List listData) {
     List<Widget> otherList = [];
-    for(int i = 0; i < listData.length; i++){
+    for(int i = 0; i < listData.length; i++) {
       var item = listData[i];
       otherList.add(ListTile(
         title: Text(item['title']),
@@ -115,7 +116,7 @@ class RListPageState extends State<RListPage> {
           Routes.router.navigateTo(context, '/rank/info/${bodyJson}');
         },
       ));
-    };
+    }
     return otherList;
   }
 

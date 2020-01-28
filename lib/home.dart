@@ -7,7 +7,7 @@ import 'utils/route.dart';
 import 'utils/request.dart';
 import 'utils/api.dart';
 
-import 'package:ai_reader/books/shelf.dart';
+//import 'package:ai_reader/books/shelf.dart';
 import 'package:ai_reader/find/fhome.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
             tabs: <Widget>[
               new Tab(text: '书架',),
               new Tab(text: '社区',),
-              new Tab(text: '发现',),
+//              new Tab(text: '发现',),
 //              new Tab(icon: new Icon(Icons.directions_bus),),
             ],
             controller: _tabController,
@@ -64,9 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: new TabBarView(
           children: <Widget>[
-            new BookShelfPage(),
+//            new BookShelfPage(),
             new FHomePage(),
             new FHomePage(),
+//            new FHomePage(),
           ],
         ),
       ),
