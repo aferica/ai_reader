@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 
 import 'package:ai_reader/home.dart';
+import 'package:ai_reader/first.dart';
 import 'package:ai_reader/books/shelf.dart';
 import 'package:ai_reader/books/read.dart';
 import 'package:ai_reader/books/info.dart';
@@ -11,6 +12,7 @@ import 'package:ai_reader/rank/rinfo.dart';
 class Routes {
   static Router router;
   static String home = '/';
+  static String first = '/first';
   static String bShelf = '/book/shelf';
   static String bRead = '/book/read/:id';
   static String bInfo = '/book/info/:id';
@@ -20,6 +22,11 @@ class Routes {
 
 
   static void configureRoutes(Router router) {
+    router.define(
+        first,
+        handler: Handler(handlerFunc: (context, params) => FirstPage()),
+        transitionType: TransitionType.inFromRight
+    );
     router.define(
         home,
         handler: Handler(handlerFunc: (context, params) => MyHomePage()),

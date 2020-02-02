@@ -52,12 +52,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - static/images/boy.png
+    - static/images/girl.png
     - static/images/home_book_city.png
     - static/images/home_find_category.png
     - static/images/home_find_rank.png
     - static/images/home_find_topic.png
     - static/images/reader_background.jpg
     - static/images/ic_rank_collapse.png
+    - static/images/ic_gender_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

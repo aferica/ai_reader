@@ -118,12 +118,12 @@ class _SplashScreenState extends State<SplashScreen> {
   String imageSrc = 'images/launch_image_1920.png';
 
   void navigationPage({bool isHome = false}) {
-//    Navigator.of(context).pop();
-//    if (isHome) {
+    Navigator.of(context).pop();
+    if (isHome) {
       Routes.router.navigateTo(context, '${Routes.home}', clearStack: true);
-//    } else {
-//      Routes.router.navigateTo(context, '${Routes.login}', clearStack: true);
-//    }
+    } else {
+      Routes.router.navigateTo(context, '${Routes.first}', clearStack: true);
+    }
   }
 
   @override
@@ -132,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
 //      checkPermission();
 //      await FlutterDownloader.initialize();
-      await setTheme();
+//      await setTheme();
       showLoading();
       checkLogin();
     });

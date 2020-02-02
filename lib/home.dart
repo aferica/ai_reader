@@ -7,7 +7,7 @@ import 'utils/route.dart';
 import 'utils/request.dart';
 import 'utils/api.dart';
 
-//import 'package:ai_reader/books/shelf.dart';
+import 'package:ai_reader/books/shelf.dart';
 import 'package:ai_reader/find/fhome.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -44,7 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
               icon: Icon(Icons.search, color: Colors.white,),
               onPressed: null
-            )
+            ),
+            IconButton(
+              icon: Icon(IconData(0xe607, fontFamily: 'aliIconFont'), color: Theme.of(context).iconTheme.color,),
+              onPressed: null,
+            ),
           ],
           bottom: new TabBar(
             tabs: <Widget>[
@@ -64,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: new TabBarView(
           children: <Widget>[
-//            new BookShelfPage(),
-            new FHomePage(),
+            new BookShelfPage(),
+//            new FHomePage(),
             new FHomePage(),
 //            new FHomePage(),
           ],
