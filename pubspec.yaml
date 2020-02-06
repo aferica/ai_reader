@@ -61,6 +61,12 @@ flutter:
     - static/images/reader_background.jpg
     - static/images/ic_rank_collapse.png
     - static/images/ic_gender_logo.png
+    - static/images/qidian.png
+    - static/images/zongheng.png
+    - static/images/17k.png
+    - static/images/jinjiang.jpg
+    - static/images/biquge.jpg
+    - static/images/zhuishu.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

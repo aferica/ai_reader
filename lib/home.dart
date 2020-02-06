@@ -46,15 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: null
             ),
             IconButton(
-              icon: Icon(IconData(0xe607, fontFamily: 'aliIconFont'), color: Theme.of(context).iconTheme.color,),
+              icon: Icon(IconData(0xe607, fontFamily: 'aliIconFont'), color: Theme.of(context).primaryIconTheme.color,),
               onPressed: null,
             ),
           ],
           bottom: new TabBar(
             tabs: <Widget>[
               new Tab(text: '书架',),
-              new Tab(text: '社区',),
-//              new Tab(text: '发现',),
+//              new Tab(text: '社区',),
+              new Tab(text: '发现',),
 //              new Tab(icon: new Icon(Icons.directions_bus),),
             ],
             controller: _tabController,
