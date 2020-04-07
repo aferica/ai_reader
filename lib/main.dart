@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -19,6 +21,7 @@ void main() {
   dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
         print('请求地址：' + options.uri.toString());
+        options.responseType = ResponseType.plain;
 //        /**
 //         * 添加统一认证
 //         */
@@ -42,7 +45,6 @@ void main() {
         // 对返回数据JSON数据处理
         // 例如`[{"":""},{"":""},{"":""}]`
         // 需要使用`{}`处理后才可以转为Map
-        print(response);
         String tempRes = response.toString();
         print(tempRes);
 //        Map<String, dynamic> result = await json.decode(tempRes);
@@ -56,6 +58,7 @@ void main() {
         if(tempRes[0] == '[') {
           tempRes = '{"reslut":' + tempRes + '}';
         }
+        print(tempRes);
         Map<String, dynamic> result = json.decode(tempRes);
         print(result);
         response.data = result;
@@ -72,6 +75,11 @@ void main() {
       }
   ));
   runApp(MyApp());
+
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -91,7 +99,7 @@ class MyApp extends StatelessWidget {
           dismissOtherOnShow: true,
           textPadding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
           child: MaterialApp(
-            title: 'Ai息',
+            title: '免费小说阅读',
             //国际语言包
             localizationsDelegates:[GlobalMaterialLocalizations.delegate,GlobalWidgetsLocalizations.delegate],
             supportedLocales: [const Locale('zh', 'CH')],

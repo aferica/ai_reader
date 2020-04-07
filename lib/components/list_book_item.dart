@@ -65,7 +65,7 @@ class ListBookItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(name, textAlign: TextAlign.left, style: TextStyle(fontSize: 18.0),),
+                  Text(name, textAlign: TextAlign.left, style: TextStyle(fontSize: 18.0), maxLines: 1,),
                   Text(author, textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.black26),),
                   Text(shortIntro, textAlign: TextAlign.left, maxLines: 2, style: TextStyle(fontSize: 12.0, color: Colors.black26),),
                   Row(

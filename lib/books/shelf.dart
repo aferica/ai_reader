@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:aferica_flutter_components/components/exception_message.dart';
 
 import 'dart:async';
 
@@ -16,46 +16,35 @@ class BookShelfPageState extends State<BookShelfPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
     GlobalKey<RefreshIndicatorState>();
 
-  static final List<String> _items = <String>[
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N'
-  ];
+  List books = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('111111');
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      body: RefreshIndicator(
+      body: buildShelf()
+    );
+  }
+
+  Widget buildShelf() {
+    if (books.length > 0) {
+      return RefreshIndicator(
         onRefresh: _onRefresh,
         displacement: 20,
         child: ListView.separated(
           padding: kMaterialListPadding,
-          itemCount: _items.length,
+          itemCount: books.length,
           itemBuilder: (BuildContext context, int index) {
-            final String item = _items[index];
+            final String item = books[index];
             return ListTile(
-//              dense: true,
               leading: CircleAvatar(child: Text(item)),
-              title: Text('结婚就是给自由穿件棉衣 $item.'),
+              title: Text('Book'),
               onLongPress: () {
 
               },
@@ -70,6 +59,16 @@ class BookShelfPageState extends State<BookShelfPage> {
           },
           separatorBuilder: (BuildContext context, int index) => new Divider(height: 0,),
         ),
+      );
+    }
+
+    return Center(
+      child: ExceptionMessage(
+        type: 'find',
+        msg: '书架空空的',
+        onClick: () {
+          print('添加书籍');
+        },
       ),
     );
   }

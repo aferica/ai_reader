@@ -176,6 +176,7 @@ class BReadPageState extends State<BReadPage> {
       );
     } else {
       Request.get(Api.host + Api.bookSource + bookId).then((sources) {
+        print(sources);
         if (sources != null && sources.length > 0) {
           int selectSource = 0;
           if (sources['reslut'].length > 1) {
@@ -226,7 +227,7 @@ class BReadPageState extends State<BReadPage> {
   }
 
   getChapterContent(String link, String title, int readChapterNo, int readPageNo, { bool isLast = false}) {
-
+    print(link);
     Request.get(Api.chapterHost + Api.bookContent + UrlEncode().encode(link)).then((res){
       String contentText = '你正在使用的版本已不再提供支持，为确保你的正常使用，请下载安装最新版<追书神器>。';
       if(res != null) {

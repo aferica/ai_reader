@@ -129,7 +129,10 @@ class BInfoPageState extends State<BInfoPage> {
             new Divider(),
             Container(
               padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
-              child: Text(bookInfo['longIntro']),
+              child: Text.rich(
+                TextSpan(children: [TextSpan(text: bookInfo['longIntro'],)]),
+                textAlign: TextAlign.justify,
+              ),
             ),
             Container(
               color: const Color(0xffe9eaec),
