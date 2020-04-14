@@ -53,7 +53,7 @@ class RankBookListState extends State<RankBookList> {
               id: book['_id'],
               name: book['title'],
               author: book['author'],
-              cover: book['cover'],
+              cover: 'http://statics.zhuishushenqi.com' + book['cover'],
               shortIntro: book['shortIntro'],
               minorCate: book['minorCate'],
               majorCate: book['majorCate'],

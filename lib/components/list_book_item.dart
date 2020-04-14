@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:aferica_flutter_components/my_image/index.dart';
 
 import 'package:ai_reader/utils/route.dart';
 
@@ -56,12 +56,12 @@ class ListBookItem extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Container(
-              width: 100,
-              padding: EdgeInsets.all(0.0),
-              child: CachedNetworkImage(imageUrl: 'http://statics.zhuishushenqi.com' + cover, width: 80, height: 100,),
+              width: 80,
+              padding: EdgeInsets.only(right: 20.0),
+              child: MyNetWorkImage(src: cover, width: 60, height: 80,),
             ),
             Container(
-              width: MediaQuery.of(context).size.width - 120,
+              width: MediaQuery.of(context).size.width - 100,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -69,7 +69,7 @@ class ListBookItem extends StatelessWidget {
                   Text(author, textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.black26),),
                   Text(shortIntro, textAlign: TextAlign.left, maxLines: 2, style: TextStyle(fontSize: 12.0, color: Colors.black26),),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Text('追书人数：', style: TextStyle(fontSize: 12.0,height: 1.5),),

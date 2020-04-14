@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,13 +6,16 @@ import 'package:oktoast/oktoast.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'theme/index.dart';
 import 'utils/request.dart';
 import 'utils/route.dart';
 import 'utils/shared_pres.dart';
+import 'package:ai_reader/db/db.dart';
+import 'package:ai_reader/db/shelf.dart';
 
-void main() {
+void main() async {
   final router = new Router();
   Routes.configureRoutes(router);
   Routes.router = router;
@@ -47,21 +49,6 @@ void main() {
         // 需要使用`{}`处理后才可以转为Map
         String tempRes = response.toString();
         print(tempRes);
-//        Map<String, dynamic> result = await json.decode(tempRes);
-//        if ( response.request.uri.toString() != Api.host + Api.login
-//            && response.request.uri.toString() != Api.host + Api.check
-//            && result['data'] != null
-//        ){
-//          String decryptResult = await AES.decrypt(result['data']);
-//          result['data'] = await json.decode(decryptResult);
-//        }
-        if(tempRes[0] == '[') {
-          tempRes = '{"reslut":' + tempRes + '}';
-        }
-        print(tempRes);
-        Map<String, dynamic> result = json.decode(tempRes);
-        print(result);
-        response.data = result;
         return response;
       },
       onError: (DioError e) {
@@ -80,6 +67,8 @@ void main() {
     SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+
+  await ShelfProvider().open();
 }
 
 class MyApp extends StatelessWidget {
@@ -166,38 +155,6 @@ class _SplashScreenState extends State<SplashScreen> {
     if (token == '') {
       navigationPage();
     }
-//    Request.get(Api.host + Api.check, context).then((res) async {
-//      if(res != null && res['code'] == 0) {
-//        navigationPage(isHome: true);
-//      } else {
-//        bool savePassword = await SharedPres.getBool("savePassword") ?? false;
-//        bool autoLogin = await SharedPres.getBool("autoLogin") ?? false;
-//        // 如果保存了密码且设置了自动登录，自动登录
-//        if (autoLogin && savePassword) {
-//          setState(() {
-//            loadingText = '自动登录中...';
-//          });
-//          String usernameInLocal = await SharedPres.get('username') ?? '';
-//          String passwordInLocal = await SharedPres.get('password') ?? '';
-//          Map<String, String> params = new Map();
-//          params['username'] = usernameInLocal;
-//          String md5Password = md5.convert(Utf8Encoder().convert(passwordInLocal + '-AiZone')).toString();
-//          params['password'] = md5Password;
-//          Request.post(Api.host + Api.login, context, params: params).then((res) async {
-//            if(res != null) {
-//              await SharedPres.set('token', res['data']['token']);
-//              await SharedPres.set('userInfo', json.encode(res['data']['userInfo']));
-//              showToast('登录成功',);
-//              navigationPage(isHome: true);
-//            } else {
-//              navigationPage();
-//            }
-//          });
-//        } else {
-//          navigationPage();
-//        }
-//      }
-//    });
   }
 
   showLoading() async {

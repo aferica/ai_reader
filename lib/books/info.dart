@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:aferica_flutter_components/my_image/index.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'package:ai_reader/utils/route.dart';
 import 'package:ai_reader/utils/request.dart';
 import 'package:ai_reader/utils/api.dart';
+import 'package:ai_reader/db/shelf.dart';
 
 class BInfoPage extends StatefulWidget {
   final String bookId;
@@ -58,9 +60,9 @@ class BInfoPageState extends State<BInfoPage> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 100,
+                    width: 80,
                     padding: EdgeInsets.all(10.0),
-                    child: CachedNetworkImage(imageUrl: 'http://statics.zhuishushenqi.com' + bookInfo['cover'], width: 60, height: 80,),
+                    child: MyNetWorkImage(src: 'http://statics.zhuishushenqi.com' + bookInfo['cover'], width: 60, height: 80,),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width - 100,
@@ -93,8 +95,24 @@ class BInfoPageState extends State<BInfoPage> {
                     width: MediaQuery.of(context).size.width / 2 - 30.0,
                     padding: EdgeInsets.only(right: 15.0),
                     child: RaisedButton(
-                      onPressed: () {
-
+                      onPressed: () async {
+                        Shelf shelf = new Shelf(
+                          name: bookInfo['title'],
+                          cover: 'http://statics.zhuishushenqi.com' + bookInfo['cover'],
+                          author: bookInfo['author'],
+                          newChapter: bookInfo['lastChapter'],
+                          chapterCount: bookInfo['chaptersCount'],
+                          currentChapter: '',
+                          currentChapterNum: 0,
+                          source: bookInfo['_id'],
+                          lastReadTime: new DateTime.now().millisecondsSinceEpoch,
+                          lastUpdateTime: new DateTime.now().millisecondsSinceEpoch
+                        );
+                        shelf = await ShelfProvider().insert(shelf);
+                        print(shelf);
+                        if (shelf.id != null) {
+                          showToast('添加书架成功！');
+                        }
                       },
                       color: Theme.of(context).primaryColor,
                       child: Text('加入书架'),
@@ -167,6 +185,10 @@ class BInfoPageState extends State<BInfoPage> {
         });
       }
     });
+  }
+
+  checkBookInShelf() {
+
   }
 
 }

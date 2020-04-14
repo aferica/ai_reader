@@ -47,7 +47,7 @@ class BReadPageState extends State<BReadPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-//    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     getChapters();
   }
 
@@ -93,22 +93,22 @@ class BReadPageState extends State<BReadPage> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
-                if(pageNo < contents.length - 1) {
-                  sharedPreferences.setInt('readPageNo_' + bookId, pageNo + 1);
-                  setState(() {
-                    pageNo = pageNo + 1;
-                  });
-                } else {
-                  setState(() {
-                    chapterNo = chapterNo + 1;
-                    pageNo = 0;
-                    content = '';
-                    contents = [];
-                  });
-                  getNextChapter();
-                }
-              },
+//              onTap: () {
+//                if(pageNo < contents.length - 1) {
+//                  sharedPreferences.setInt('readPageNo_' + bookId, pageNo + 1);
+//                  setState(() {
+//                    pageNo = pageNo + 1;
+//                  });
+//                } else {
+//                  setState(() {
+//                    chapterNo = chapterNo + 1;
+//                    pageNo = 0;
+//                    content = '';
+//                    contents = [];
+//                  });
+//                  getNextChapter();
+//                }
+//              },
               onHorizontalDragEnd: (e) {
                 print(e);
                 print(e.velocity);

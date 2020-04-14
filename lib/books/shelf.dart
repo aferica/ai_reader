@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:aferica_flutter_components/components/exception_message.dart';
+import 'package:aferica_flutter_components/my_image/index.dart';
 
-import 'dart:async';
+import 'package:ai_reader/components/shelf_book_item.dart';
+import 'package:ai_reader/db/shelf.dart';
+import 'package:ai_reader/utils/route.dart';
 
 class BookShelfPage extends StatefulWidget {
   @override
@@ -16,12 +21,13 @@ class BookShelfPageState extends State<BookShelfPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
     GlobalKey<RefreshIndicatorState>();
 
-  List books = [];
+  List<Shelf> books = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getBooksFromShelf();
   }
 
   @override
@@ -41,20 +47,40 @@ class BookShelfPageState extends State<BookShelfPage> {
           padding: kMaterialListPadding,
           itemCount: books.length,
           itemBuilder: (BuildContext context, int index) {
-            final String item = books[index];
-            return ListTile(
-              leading: CircleAvatar(child: Text(item)),
-              title: Text('Book'),
-              onLongPress: () {
-
+            Shelf item = books[index];
+            return ShelfBookItem(
+              shelf: item,
+              onTap: () {
+                Routes.router.navigateTo(context, '/book/read/' + item.source);
               },
-              subtitle: const Text('结婚就是给自由穿件棉衣',),
-              contentPadding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
-              trailing: CircleAvatar(
-                radius: 10.0,
-                backgroundColor: Theme.of(context).errorColor,
-                child: Text('1', style: TextStyle(fontSize: 10.0),),
-              ),
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: Text('确实删除《' + item.name + '》？'),
+                      content: Text('删除后会删除本书的所有信息，包括历史和阅读记录，请注意！'),
+                      actions: <Widget>[
+                        new FlatButton(
+                          child: new Text('确定删除'),
+                          onPressed: () async {
+                            await ShelfProvider().delete(item.id);
+                            await getBooksFromShelf();
+                            Navigator.of(context).pop();//关闭对话框
+                          },
+                        ),
+
+                        new FlatButton(
+                          child: new Text('再想一想'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                );
+              },
             );
           },
           separatorBuilder: (BuildContext context, int index) => new Divider(height: 0,),
@@ -73,21 +99,20 @@ class BookShelfPageState extends State<BookShelfPage> {
     );
   }
 
-  Future<void> _onRefresh() {
+  Future<void> _onRefresh() async {
+    print('开始刷新');
     final Completer<void> completer = Completer<void>();
-    Timer(const Duration(seconds: 3), () {
-      completer.complete();
-    });
-    return completer.future.then<void>((_) {
-      _scaffoldKey.currentState?.showSnackBar(SnackBar(
-        content: const Text('Refresh complete'),
-        action: SnackBarAction(
-          label: 'RETRY',
-          onPressed: () {
-            _refreshIndicatorKey.currentState.show();
-          })
-        ),
-      );
+    await getBooksFromShelf();
+    completer.complete();
+    print('结束刷新');
+    return null;
+  }
+
+  getBooksFromShelf() async {
+    print('获取列表数据');
+    List<Shelf> all = await ShelfProvider().getAll();
+    setState(() {
+      books = all;
     });
   }
 }
