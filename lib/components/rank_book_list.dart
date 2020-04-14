@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ai_reader/components/list_book_item.dart';
 
-import 'package:ai_reader/utils/route.dart';
+//import 'package:ai_reader/utils/route.dart';
 import 'package:ai_reader/utils/request.dart';
 import 'package:ai_reader/utils/api.dart';
 
 class RankBookList extends StatefulWidget {
   RankBookList({Key key, this.rankId}):super(key: key);
-  String rankId;
+  final String rankId;
 
   @override
   State<StatefulWidget> createState() {

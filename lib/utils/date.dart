@@ -94,5 +94,7 @@ class DateUtils {
     if(seconds > (24 * 365)) {
       return (seconds ~/ (24 * 365)).toString() + '年前';
     }
+
+    return '';
   }
 }

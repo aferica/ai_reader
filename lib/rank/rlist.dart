@@ -87,7 +87,7 @@ class RListPageState extends State<RListPage> {
                   } else {
                     bodyJson = '{"title":"${item['title']}","_id":"${item['_id']}"}';
                   }
-                  Routes.router.navigateTo(context, '/rank/info/${bodyJson}');
+                  Routes.router.navigateTo(context, '/rank/info/' + bodyJson);
                 },
               );
             }
@@ -98,6 +98,7 @@ class RListPageState extends State<RListPage> {
                 children: _buildOtherList(notImportantRank),
               );
             }
+            return null;
           },
 //          separatorBuilder: (BuildContext context, int index) => new Divider(height: 0,),
 //        ),
@@ -113,7 +114,7 @@ class RListPageState extends State<RListPage> {
         title: Text(item['title']),
         onTap: () {
           String bodyJson = '{"title":"${item['title']}","_id":"${item['_id']}"}';
-          Routes.router.navigateTo(context, '/rank/info/${bodyJson}');
+          Routes.router.navigateTo(context, '/rank/info/' + bodyJson);
         },
       ));
     }

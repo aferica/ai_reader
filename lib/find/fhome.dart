@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:ai_reader/utils/route.dart';
-import 'package:ai_reader/utils/request.dart';
-import 'package:ai_reader/utils/api.dart';
+//import 'package:ai_reader/utils/request.dart';
+//import 'package:ai_reader/utils/api.dart';
 
 class FHomePage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class FHomePage extends StatefulWidget {
 class FHomePageState extends State<FHomePage> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+//    double width = MediaQuery.of(context).size.width;
     // TODO: implement build
     return Scaffold(
       body: Column(

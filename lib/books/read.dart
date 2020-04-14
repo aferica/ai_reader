@@ -10,7 +10,7 @@ import 'package:ai_reader/utils/api.dart';
 import 'package:ai_reader/utils/url_util.dart';
 
 class BReadPage extends StatefulWidget {
-  String bookId;
+  final String bookId;
   BReadPage({Key key, this.bookId}):super(key: key);
   @override
   State<StatefulWidget> createState() {

@@ -6,7 +6,7 @@ import 'package:ai_reader/utils/request.dart';
 import 'package:ai_reader/utils/api.dart';
 
 class BInfoPage extends StatefulWidget {
-  String bookId;
+  final String bookId;
   BInfoPage({Key key, this.bookId}):super(key: key);
 
   @override

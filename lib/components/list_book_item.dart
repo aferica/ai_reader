@@ -47,7 +47,7 @@ class ListBookItem extends StatelessWidget {
 //    );
     return GestureDetector(
       onTap: () {
-        Routes.router.navigateTo(context, '/book/info/${id}');
+        Routes.router.navigateTo(context, '/book/info/' + id);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

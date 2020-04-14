@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ai_reader/components/rank_book_list.dart';
 import 'dart:convert';
 
-import 'package:ai_reader/utils/route.dart';
-import 'package:ai_reader/utils/request.dart';
-import 'package:ai_reader/utils/api.dart';
+//import 'package:ai_reader/utils/route.dart';
+//import 'package:ai_reader/utils/request.dart';
+//import 'package:ai_reader/utils/api.dart';
 
 class RInfoPage extends StatefulWidget {
   RInfoPage({Key key, this.rankInfo}):super(key: key);
-  String rankInfo;
+  final String rankInfo;
 
   @override
   State<StatefulWidget> createState() {
